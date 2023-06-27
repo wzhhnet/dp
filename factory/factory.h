@@ -47,8 +47,8 @@ class FactoryImpl : public IFactory
 
     virtual std::shared_ptr<IProduct> CreateEx() override
     {
-    	return std::dynamic_pointer_cast<IProduct>(
-			std::make_shared<T>());
+        return std::dynamic_pointer_cast<IProduct>(
+                        std::make_shared<T>());
     }
 };
 
