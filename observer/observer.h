@@ -21,6 +21,7 @@
 
 namespace dp {
 
+class ISubject;
 class IObject
 {
   public:
@@ -31,11 +32,13 @@ class IObserver
 {
   public:
     virtual void OnUpdate(IObject *obj) = 0;
+    virtual void OnSubjectUpdate(ISubject *sub) = 0;
 };
 
 class ISubject
 {
   public:
+    ISubject() {}
     virtual ~ISubject() {};
     void Attach(IObserver *observer)
     {
@@ -46,13 +49,22 @@ class ISubject
     {
 	observers_.remove(observer);
     };
+
+  protected:
     void Update(IObject *obj)
     {
         for (auto obs : observers_) {
 	    obs->OnUpdate(obj);
 	}
     };
+    void SelfUpdate()
+    {
+	for (auto obs : observers_) {
+	    obs->OnSubjectUpdate(this);
+	}
+    };
   private:
     std::list<IObserver*> observers_;
 };
+
 }; // namespace dp
