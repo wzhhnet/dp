@@ -40,6 +40,7 @@ struct ElementC
     int a;
     int b;
     ElementC() : a(0), b(0) {}
+    ElementC(int _a, int _b) : a(_a), b(_b) {}
     ElementC(const ElementC &orig)
     {
         *this = orig;
@@ -83,6 +84,7 @@ class ElementManager : public CreationPolicy<ElementA>
 //Instantiating Creator
 using ElementANewCreator = Creator<OpNewCreator<ElementA>>;
 using ElementBMalloCreator = Creator<MallocCreator<ElementB>>;
+using ElementCPrototypeCreator = Creator<PrototypeCreator<ElementC>>;
 
 int main (int argc, char **argv)
 {
@@ -92,9 +94,18 @@ int main (int argc, char **argv)
   ElementB* b = ElementManager<OpNewCreator>().CreateElementB();
   b = ElementManager<MallocCreator>().CreateElementB();
   ElementC* c = ElementManager<PrototypeCreator>().CreateElementC();
+  a = ElementManager<PrototypeCreator>().GetPrototype();
+  std::cout << "a=" << a << std::endl;
 
   ElementANewCreator().Create();
   ElementBMalloCreator().Create();
-  Creator<PrototypeCreator<ElementC>>().Create();
+  c = Creator<PrototypeCreator<ElementC>>().Create();
+  std::cout << "c=" << c << std::endl;
+
+  ElementC cc(1, 2);
+  ElementCPrototypeCreator ccontr;
+  ccontr.SetPrototype(&cc);
+  c = ccontr.GetPrototype();
+  std::cout << "c=" << c << std::endl;
   return 0;
 }
