@@ -70,15 +70,7 @@ class Creator : public CreationPolicy
 template <template <class /* T */> class CreationPolicy>
 class ElementManager : public CreationPolicy<ElementA>
 {
-  public: 
-    ElementB* CreateElementB()
-    {
-        return CreationPolicy<ElementB>().Create();
-    }
-    ElementC* CreateElementC()
-    {
-        return CreationPolicy<ElementC>().Create();
-    }
+    //TODO(wanch):
 };
 
 //Instantiating Creator
@@ -88,17 +80,21 @@ using ElementCPrototypeCreator = Creator<PrototypeCreator<ElementC>>;
 
 int main (int argc, char **argv)
 {
-  ElementA* a = ElementManager<OpNewCreator>().Create();
-  a = ElementManager<MallocCreator>().Create();
+  ElementA* a;
+  ElementB* b;
+  ElementC* c;
 
-  ElementB* b = ElementManager<OpNewCreator>().CreateElementB();
-  b = ElementManager<MallocCreator>().CreateElementB();
-  ElementC* c = ElementManager<PrototypeCreator>().CreateElementC();
+  a = ElementManager<OpNewCreator>().Create();
+  std::cout << "a=" << a << std::endl;
+  a = ElementManager<MallocCreator>().Create();
+  std::cout << "a=" << a << std::endl;
   a = ElementManager<PrototypeCreator>().GetPrototype();
   std::cout << "a=" << a << std::endl;
 
-  ElementANewCreator().Create();
-  ElementBMalloCreator().Create();
+  a = ElementANewCreator().Create();
+  std::cout << "a=" << a << std::endl;
+  b =ElementBMalloCreator().Create();
+  std::cout << "b=" << b << std::endl;
   c = Creator<PrototypeCreator<ElementC>>().Create();
   std::cout << "c=" << c << std::endl;
 

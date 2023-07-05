@@ -28,6 +28,8 @@ struct OpNewCreator
 	std::cout << __PRETTY_FUNCTION__ << std::endl;
         return new T;
     }
+  protected:
+    ~OpNewCreator() {}
 };
 
 template <class T>
@@ -40,6 +42,8 @@ struct MallocCreator
         if (!buf) return nullptr;
 	return new(buf)	T;
     }
+  protected:
+    ~MallocCreator() {}
 };
 
 template <class T>
@@ -54,7 +58,8 @@ struct PrototypeCreator
     }
     T* GetPrototype() { return prototype_; }
     void SetPrototype(T *obj) { prototype_ = obj; }
-
+  protected:
+    ~PrototypeCreator() {}
   private:
     T* prototype_;
 };
